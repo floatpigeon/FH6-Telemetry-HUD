@@ -1,0 +1,131 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="FH6TelemetryHud.SettingsWindow"
+        Width="560"
+        Height="560"
+        MinWidth="520"
+        MinHeight="500"
+        Title="HUD 设置"
+        Background="#E81D2024"
+        TransparencyLevelHint="Transparent"
+        CanResize="True"
+        Topmost="True"
+        WindowStartupLocation="CenterScreen">
+
+  <Window.Styles>
+    <Style Selector="TextBlock.title">
+      <Setter Property="FontFamily" Value="Inter" />
+      <Setter Property="FontSize" Value="24" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="#F0F2F4" />
+    </Style>
+    <Style Selector="TextBlock.label">
+      <Setter Property="FontFamily" Value="Inter" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="Foreground" Value="#D8DDE2" />
+    </Style>
+    <Style Selector="TextBlock.value">
+      <Setter Property="FontFamily" Value="Inter" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="Foreground" Value="#F0F2F4" />
+    </Style>
+    <Style Selector="Button.close-button">
+      <Setter Property="HorizontalAlignment" Value="Right" />
+      <Setter Property="Padding" Value="18,8" />
+      <Setter Property="Foreground" Value="#F0F2F4" />
+      <Setter Property="Background" Value="#D92A2E33" />
+      <Setter Property="BorderBrush" Value="#B5BEC6" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="4" />
+    </Style>
+  </Window.Styles>
+
+  <Border x:Name="SettingsSurface"
+          Margin="18"
+          Padding="24"
+          Background="#E81D2024"
+          BorderBrush="#B5BEC6"
+          BorderThickness="1"
+          CornerRadius="5">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+      <StackPanel Spacing="18">
+        <TextBlock Text="HUD 设置" Classes="title" />
+
+        <Border x:Name="BackgroundSection"
+                Padding="16"
+                Background="#D92A2E33"
+                BorderBrush="#B5BEC6"
+                BorderThickness="1"
+                CornerRadius="4">
+          <StackPanel Spacing="10">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="模块背景透明度" Classes="label" />
+              <TextBlock x:Name="BackgroundValueText" Grid.Column="1" Classes="value" />
+            </Grid>
+            <TextBlock Text="换挡指示灯带、数据模块和本设置窗口共用此透明度。"
+                       Classes="label"
+                       TextWrapping="Wrap" />
+            <Slider x:Name="BackgroundSlider"
+                    Minimum="0.2"
+                    Maximum="1"
+                    Value="0.25"
+                    TickFrequency="0.05" />
+          </StackPanel>
+        </Border>
+
+        <Border x:Name="BorderSection"
+                Padding="16"
+                Background="#D92A2E33"
+                BorderBrush="#B5BEC6"
+                BorderThickness="1"
+                CornerRadius="4">
+          <StackPanel Spacing="10">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="边框透明度" Classes="label" />
+              <TextBlock x:Name="BorderValueText" Grid.Column="1" Classes="value" />
+            </Grid>
+            <TextBlock Text="调整 HUD 外框、模块边框和设置窗口边框的可见程度。"
+                       Classes="label"
+                       TextWrapping="Wrap" />
+            <Slider x:Name="BorderSlider"
+                    Minimum="0.1"
+                    Maximum="1"
+                    Value="0.25"
+                    TickFrequency="0.05" />
+          </StackPanel>
+        </Border>
+
+        <Border x:Name="WindowSection"
+                Padding="16"
+                Background="#D92A2E33"
+                BorderBrush="#B5BEC6"
+                BorderThickness="1"
+                CornerRadius="4">
+          <StackPanel Spacing="10">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="窗口宽度" Classes="label" />
+              <TextBlock x:Name="WidthValueText" Grid.Column="1" Classes="value" />
+            </Grid>
+            <Slider x:Name="WidthSlider"
+                    Minimum="310"
+                    Maximum="1400"
+                    TickFrequency="10" />
+
+            <Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+              <TextBlock Text="窗口高度" Classes="label" />
+              <TextBlock x:Name="HeightValueText" Grid.Column="1" Classes="value" />
+            </Grid>
+            <Slider x:Name="HeightSlider"
+                    Minimum="95"
+                    Maximum="500"
+                    TickFrequency="10" />
+          </StackPanel>
+        </Border>
+
+        <Button Classes="close-button"
+                Content="关闭"
+                Click="OnCloseClick" />
+      </StackPanel>
+    </ScrollViewer>
+  </Border>
+</Window>

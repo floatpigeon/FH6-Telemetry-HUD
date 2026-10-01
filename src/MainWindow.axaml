@@ -1,0 +1,148 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FH6TelemetryHud.ViewModels"
+        x:Class="FH6TelemetryHud.MainWindow"
+        x:DataType="vm:HudViewModel"
+        Width="500"
+        Height="200"
+        MinWidth="310"
+        MinHeight="95"
+        Background="#E81D2024"
+        TransparencyLevelHint="Transparent"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="0"
+        SystemDecorations="None"
+        CanResize="True"
+        ShowInTaskbar="True"
+        Topmost="True"
+        WindowStartupLocation="CenterScreen"
+        KeyDown="OnKeyDown"
+        PointerPressed="OnPointerPressed"
+        SizeChanged="OnWindowSizeChanged">
+
+  <Window.Styles>
+    <Style Selector="TextBlock.metric-value">
+      <Setter Property="FontFamily" Value="Inter" />
+      <Setter Property="FontSize" Value="40" />
+      <Setter Property="FontWeight" Value="Normal" />
+      <Setter Property="Foreground" Value="#F0F2F4" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="TextBlock.bar-label">
+      <Setter Property="FontFamily" Value="Inter" />
+      <Setter Property="FontSize" Value="18" />
+      <Setter Property="Foreground" Value="#E8EBEE" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.settings-button">
+      <Setter Property="Width" Value="28" />
+      <Setter Property="Height" Value="28" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="FontSize" Value="16" />
+      <Setter Property="Foreground" Value="#F0F2F4" />
+      <Setter Property="Background" Value="#D92A2E33" />
+      <Setter Property="BorderBrush" Value="#B5BEC6" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="3" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+  </Window.Styles>
+
+  <Grid>
+    <Border x:Name="HudSurface"
+            BorderBrush="#B5BEC6"
+            BorderThickness="1"
+            Background="#E81D2024"
+            CornerRadius="1"
+            Padding="0">
+      <Grid x:Name="HudLayout" RowDefinitions="96,1,*">
+        <Border x:Name="IndicatorBorder"
+                Grid.Row="0"
+                Background="#E81D2024"
+                BorderBrush="#B5BEC6"
+                BorderThickness="1"
+                Padding="16,0">
+          <StackPanel x:Name="IndicatorLightsPanel"
+                      Orientation="Horizontal"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center" />
+        </Border>
+
+        <Rectangle x:Name="MainDivider" Grid.Row="1" Fill="#B5BEC6" />
+
+        <Grid Grid.Row="2" ColumnDefinitions="1.04*,0.61*,1.04*">
+          <Border x:Name="LeftModuleBorder"
+                  Grid.Column="0"
+                  BorderBrush="#B5BEC6"
+                  BorderThickness="1">
+            <Grid x:Name="LeftModule" RowDefinitions="19,*" Background="#401D2024">
+              <Grid x:Name="LeftBarTrack" Grid.Row="0" Background="#402A2E33">
+                <Grid ColumnDefinitions="50*,50*">
+                  <Grid Grid.Column="0" ColumnDefinitions="70*,30*">
+                    <Border Grid.Column="1" Background="#D9533E3E" />
+                  </Grid>
+                  <Grid Grid.Column="1" ColumnDefinitions="30*,70*">
+                    <Border Grid.Column="0" Background="#D9533E3E" />
+                  </Grid>
+                </Grid>
+                <TextBlock Text="{Binding LeftPercentage}" Classes="bar-label" />
+              </Grid>
+              <TextBlock Grid.Row="1" Text="{Binding LeftValue}" Classes="metric-value" />
+            </Grid>
+          </Border>
+
+          <Border x:Name="MiddleModuleBorder"
+                  Grid.Column="1"
+                  BorderBrush="#B5BEC6"
+                  BorderThickness="1">
+            <Grid x:Name="MiddleModule" Background="#E81D2024">
+              <TextBlock Text="{Binding Gear}" Classes="metric-value" />
+            </Grid>
+          </Border>
+
+          <Border x:Name="RightModuleBorder"
+                  Grid.Column="2"
+                  BorderBrush="#B5BEC6"
+                  BorderThickness="1">
+            <Grid x:Name="RightModule" RowDefinitions="19,*" Background="#401D2024">
+              <Grid x:Name="RightBarTrack" Grid.Row="0" Background="#402A2E33">
+                <Grid ColumnDefinitions="50*,50*">
+                  <Border Grid.Column="0" Background="#D9536C4A" />
+                  <Border Grid.Column="1" Background="#D9536C4A" />
+                </Grid>
+                <TextBlock Text="{Binding RightPercentage}" Classes="bar-label" />
+              </Grid>
+              <Grid Grid.Row="1">
+                <TextBlock Text="{Binding Speed}" Classes="metric-value" />
+                <TextBlock Text="{Binding SpeedUnit}"
+                           FontFamily="Inter"
+                           FontSize="19"
+                           Foreground="#E8EBEE"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Top"
+                           Margin="0,10,26,0" />
+              </Grid>
+            </Grid>
+          </Border>
+        </Grid>
+      </Grid>
+    </Border>
+
+    <Button x:Name="SettingsButton"
+            Classes="settings-button"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Margin="8"
+            ToolTip.Tip="设置"
+            Click="OnSettingsClick">
+      <StackPanel Orientation="Vertical" Spacing="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Rectangle Width="14" Height="1.5" Fill="#F0F2F4" />
+        <Rectangle Width="14" Height="1.5" Fill="#F0F2F4" />
+        <Rectangle Width="14" Height="1.5" Fill="#F0F2F4" />
+      </StackPanel>
+    </Button>
+  </Grid>
+</Window>
