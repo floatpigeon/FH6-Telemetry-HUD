@@ -81,10 +81,10 @@
             <Grid x:Name="LeftModule" RowDefinitions="19,*" Background="#401D2024">
               <Grid x:Name="LeftBarTrack" Grid.Row="0" Background="#402A2E33">
                 <Grid ColumnDefinitions="50*,50*">
-                  <Grid Grid.Column="0" ColumnDefinitions="70*,30*">
+                  <Grid x:Name="LeftBrakeLeftHalf" Grid.Column="0" ColumnDefinitions="70*,30*">
                     <Border Grid.Column="1" Background="#D9533E3E" />
                   </Grid>
-                  <Grid Grid.Column="1" ColumnDefinitions="30*,70*">
+                  <Grid x:Name="LeftBrakeRightHalf" Grid.Column="1" ColumnDefinitions="30*,70*">
                     <Border Grid.Column="0" Background="#D9533E3E" />
                   </Grid>
                 </Grid>
@@ -110,8 +110,12 @@
             <Grid x:Name="RightModule" RowDefinitions="19,*" Background="#401D2024">
               <Grid x:Name="RightBarTrack" Grid.Row="0" Background="#402A2E33">
                 <Grid ColumnDefinitions="50*,50*">
-                  <Border Grid.Column="0" Background="#D9536C4A" />
-                  <Border Grid.Column="1" Background="#D9536C4A" />
+                  <Grid x:Name="RightThrottleLeftHalf" Grid.Column="0" ColumnDefinitions="0*,100*">
+                    <Border Grid.Column="1" Background="#D9536C4A" />
+                  </Grid>
+                  <Grid x:Name="RightThrottleRightHalf" Grid.Column="1" ColumnDefinitions="100*,0*">
+                    <Border Grid.Column="0" Background="#D9536C4A" />
+                  </Grid>
                 </Grid>
                 <TextBlock Text="{Binding RightPercentage}" Classes="bar-label" />
               </Grid>

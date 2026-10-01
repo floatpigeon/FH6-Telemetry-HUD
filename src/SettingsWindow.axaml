@@ -38,6 +38,14 @@
       <Setter Property="BorderThickness" Value="1" />
       <Setter Property="CornerRadius" Value="4" />
     </Style>
+    <Style Selector="TextBox.port-box">
+      <Setter Property="Width" Value="110" />
+      <Setter Property="Padding" Value="8,5" />
+      <Setter Property="Foreground" Value="#F0F2F4" />
+      <Setter Property="Background" Value="#E81D2024" />
+      <Setter Property="BorderBrush" Value="#B5BEC6" />
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
   </Window.Styles>
 
   <Border x:Name="SettingsSurface"
@@ -119,6 +127,81 @@
                     Minimum="95"
                     Maximum="500"
                     TickFrequency="10" />
+          </StackPanel>
+        </Border>
+
+        <Border x:Name="ShiftLightSection"
+                Padding="16"
+                Background="#402A2E33"
+                BorderBrush="#B5BEC6"
+                BorderThickness="1"
+                CornerRadius="4">
+          <StackPanel Spacing="10">
+            <TextBlock Text="换挡提示灯阈值" Classes="label" />
+
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="绿灯起始亮起" Classes="label" />
+              <TextBlock x:Name="GreenStartThresholdText" Grid.Column="1" Classes="value" />
+            </Grid>
+            <Slider x:Name="GreenStartThresholdSlider" Minimum="0" Maximum="0.7" TickFrequency="0.05" />
+
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="绿色结束" Classes="label" />
+              <TextBlock x:Name="GreenThresholdText" Grid.Column="1" Classes="value" />
+            </Grid>
+            <Slider x:Name="GreenThresholdSlider" Minimum="0.1" Maximum="0.8" TickFrequency="0.05" />
+
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="黄色结束" Classes="label" />
+              <TextBlock x:Name="YellowThresholdText" Grid.Column="1" Classes="value" />
+            </Grid>
+            <Slider x:Name="YellowThresholdSlider" Minimum="0.2" Maximum="0.9" TickFrequency="0.05" />
+
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="橙色结束" Classes="label" />
+              <TextBlock x:Name="OrangeThresholdText" Grid.Column="1" Classes="value" />
+            </Grid>
+            <Slider x:Name="OrangeThresholdSlider" Minimum="0.3" Maximum="0.98" TickFrequency="0.05" />
+
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="红灯闪烁 / 换挡点" Classes="label" />
+              <TextBlock x:Name="ShiftThresholdText" Grid.Column="1" Classes="value" />
+            </Grid>
+            <Slider x:Name="ShiftThresholdSlider" Minimum="0.5" Maximum="1" TickFrequency="0.05" />
+
+            <TextBlock Text="阈值必须按绿灯起始、绿色、黄色、橙色、红灯闪烁点递增。"
+                       Classes="label"
+                       TextWrapping="Wrap" />
+            <TextBlock x:Name="ThresholdStatusText" Classes="label" TextWrapping="Wrap" />
+            <Button Classes="close-button"
+                    Content="应用阈值"
+                    Click="OnApplyThresholdsClick" />
+          </StackPanel>
+        </Border>
+
+        <Border x:Name="NetworkSection"
+                Padding="16"
+                Background="#402A2E33"
+                BorderBrush="#B5BEC6"
+                BorderThickness="1"
+                CornerRadius="4">
+          <StackPanel Spacing="10">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="监听 UDP 端口" Classes="label" />
+              <TextBox x:Name="PortTextBox"
+                       Grid.Column="1"
+                       Classes="port-box"
+                       TextAlignment="Right" />
+            </Grid>
+            <TextBlock Text="Forza Data Out 目标端口需要与这里一致。"
+                       Classes="label"
+                       TextWrapping="Wrap" />
+            <TextBlock x:Name="PortStatusText"
+                       Classes="label"
+                       TextWrapping="Wrap" />
+            <Button Classes="close-button"
+                    Content="应用端口"
+                    Click="OnApplyPortClick" />
           </StackPanel>
         </Border>
 

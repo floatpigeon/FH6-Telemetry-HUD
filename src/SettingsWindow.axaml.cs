@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using System.Globalization;
 
 namespace FH6TelemetryHud;
 
@@ -24,11 +25,26 @@ public partial class SettingsWindow : Window
         BorderSlider.Value = hud.CurrentBorderOpacity;
         WidthSlider.Value = hud.Width;
         HeightSlider.Value = hud.Height;
+        PortTextBox.Text = hud.CurrentTelemetryPort.ToString(CultureInfo.InvariantCulture);
+        PortStatusText.Text = $"当前监听：UDP {hud.CurrentTelemetryPort}";
+
+        var thresholds = hud.CurrentShiftLightThresholds;
+        GreenStartThresholdSlider.Value = thresholds.GreenStart;
+        GreenThresholdSlider.Value = thresholds.GreenEnd;
+        YellowThresholdSlider.Value = thresholds.YellowEnd;
+        OrangeThresholdSlider.Value = thresholds.OrangeEnd;
+        ShiftThresholdSlider.Value = thresholds.ShiftPoint;
+        ThresholdStatusText.Text = "当前阈值已应用。";
 
         BackgroundSlider.ValueChanged += OnBackgroundChanged;
         BorderSlider.ValueChanged += OnBorderChanged;
         WidthSlider.ValueChanged += OnWidthChanged;
         HeightSlider.ValueChanged += OnHeightChanged;
+        GreenStartThresholdSlider.ValueChanged += OnThresholdSliderChanged;
+        GreenThresholdSlider.ValueChanged += OnThresholdSliderChanged;
+        YellowThresholdSlider.ValueChanged += OnThresholdSliderChanged;
+        OrangeThresholdSlider.ValueChanged += OnThresholdSliderChanged;
+        ShiftThresholdSlider.ValueChanged += OnThresholdSliderChanged;
 
         ApplyAppearance(hud.CurrentBackgroundOpacity, hud.CurrentBorderOpacity);
         UpdateValueLabels();
@@ -45,6 +61,8 @@ public partial class SettingsWindow : Window
         BackgroundSection.Background = sectionBrush;
         BorderSection.Background = sectionBrush;
         WindowSection.Background = sectionBrush;
+        ShiftLightSection.Background = sectionBrush;
+        NetworkSection.Background = sectionBrush;
         SettingsSurface.BorderBrush = borderBrush;
         BackgroundSection.BorderBrush = borderBrush;
         BorderSection.BorderBrush = borderBrush;
@@ -99,7 +117,63 @@ public partial class SettingsWindow : Window
         UpdateValueLabels();
     }
 
+    private void OnThresholdSliderChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        UpdateValueLabels();
+    }
+
     private void OnCloseClick(object? sender, RoutedEventArgs e) => Close();
+
+    private void OnApplyPortClick(object? sender, RoutedEventArgs e)
+    {
+        if (!int.TryParse(PortTextBox.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var port))
+        {
+            PortStatusText.Text = "端口格式无效。";
+            return;
+        }
+
+        if (_hud is null)
+        {
+            PortStatusText.Text = "HUD 尚未连接。";
+            return;
+        }
+
+        if (_hud.TryChangeTelemetryPort(port, out var error))
+        {
+            PortTextBox.Text = port.ToString(CultureInfo.InvariantCulture);
+            PortStatusText.Text = $"当前监听：UDP {port}";
+        }
+        else
+        {
+            PortStatusText.Text = error;
+        }
+    }
+
+    private void OnApplyThresholdsClick(object? sender, RoutedEventArgs e)
+    {
+        if (_hud is null)
+        {
+            ThresholdStatusText.Text = "HUD 尚未连接。";
+            return;
+        }
+
+        if (_hud.TryApplyShiftLightThresholds(
+                GreenStartThresholdSlider.Value,
+                GreenThresholdSlider.Value,
+                YellowThresholdSlider.Value,
+                OrangeThresholdSlider.Value,
+                ShiftThresholdSlider.Value,
+                out var error))
+        {
+            ThresholdStatusText.Text = "换挡提示灯阈值已应用。";
+        }
+        else
+        {
+            ThresholdStatusText.Text = error;
+        }
+
+        UpdateValueLabels();
+    }
 
     private void UpdateValueLabels()
     {
@@ -109,6 +183,11 @@ public partial class SettingsWindow : Window
         var hudHeight = _hud?.Height ?? Height;
         WidthValueText.Text = $"{hudWidth:0} px";
         HeightValueText.Text = $"{hudHeight:0} px";
+        GreenStartThresholdText.Text = $"{GreenStartThresholdSlider.Value:P0}";
+        GreenThresholdText.Text = $"{GreenThresholdSlider.Value:P0}";
+        YellowThresholdText.Text = $"{YellowThresholdSlider.Value:P0}";
+        OrangeThresholdText.Text = $"{OrangeThresholdSlider.Value:P0}";
+        ShiftThresholdText.Text = $"{ShiftThresholdSlider.Value:P0}";
     }
 
     private static SolidColorBrush CreateSurfaceBrush(double opacity)
